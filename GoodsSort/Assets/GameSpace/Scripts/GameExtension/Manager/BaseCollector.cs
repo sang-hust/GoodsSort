@@ -4,6 +4,12 @@ using UnityEngine;
 public enum ItemTypeEnum 
 {
     None,
+    item_01,
+    item_02,
+    item_03,
+    item_04,
+    item_05,
+    item_06
 }
 
 public class BaseCollector
