@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class SpaceBehavior : MonoBehaviour
 {
-    private ItemTypeEnum _itemTypeEnum = ItemTypeEnum.None;
+    public ItemTypeEnum _itemTypeEnum = ItemTypeEnum.None;
+    private int _indexSpace;
+    private bool _available;
     private LayerItemBehavior _layerItemBehavior;
 
     /// <summary>
@@ -15,14 +17,16 @@ public class SpaceBehavior : MonoBehaviour
         _layerItemBehavior = GetComponentInParent<LayerItemBehavior>();
     }
 
-    public void InitSpace(ItemTypeEnum itemTypeEnum)
+    public void InitSpace(int indexSpace, ItemTypeEnum itemTypeEnum)
     {
+        _indexSpace = indexSpace;
         _itemTypeEnum = itemTypeEnum;
+        _available = _itemTypeEnum == ItemTypeEnum.None;
     }
     
     public bool IsAvailable()
     {
-        return _itemTypeEnum == ItemTypeEnum.None;
+        return _available;
     }
 
     public bool AvailableSpaceInLayer()
@@ -32,7 +36,8 @@ public class SpaceBehavior : MonoBehaviour
 
     public void FillData(ItemBehavior itemBehavior)
     {
-        _layerItemBehavior.FillItemToSpace(itemBehavior._itemTypeEnum);
-        itemBehavior.transform.position = transform.position;
+        _itemTypeEnum = itemBehavior._itemTypeEnum;
+        //_layerItemBehavior.FillItemToSpace(itemBehavior._itemTypeEnum);
+        itemBehavior.UpdatePosition(transform.position);
     }
 }

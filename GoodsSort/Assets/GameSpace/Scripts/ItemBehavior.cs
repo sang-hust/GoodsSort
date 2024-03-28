@@ -3,22 +3,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class ItemBehavior : MonoBehaviour
 {
     [SerializeField] private Image _imageItem;
     public ItemTypeEnum _itemTypeEnum;
-    private Vector3 _startPosition = Vector3.zero;
+    private ItemData _itemData;
+    private Vector3 _startPosition;
     private bool _dragging;
     private Vector3 _offset;
     private bool _isTrigger;
 
     public void Start()
     {
-        
+        var rand = Random.Range(0, 7);
+        InitItem((ItemTypeEnum) rand);
     }
 
-    public void InitItem(ItemTypeEnum itemTypeEnum, Vector3 startPosition)
+    public void InitItem(ItemTypeEnum itemTypeEnum, Vector3 startPosition = default)
     {
         _itemTypeEnum = itemTypeEnum;
         UIItem();
@@ -49,10 +52,6 @@ public class ItemBehavior : MonoBehaviour
     public void OnUp()
     {
         _dragging = false;
-        if (!_isTrigger)
-        {
-            ResetToBeginning();
-        }
     }
 
     private void ResetToBeginning()
@@ -60,20 +59,36 @@ public class ItemBehavior : MonoBehaviour
         transform.localPosition = new Vector3(0, 0, 0);
     }
 
-    private void OnTriggerEnter2D(Collider2D col)
+    /// <summary>
+    /// To new space
+    /// </summary>
+    public void UpdatePosition(Vector3 spacePosition)
     {
-        if (!col.CompareTag("Space")) return;
-        var spaceBehavior = col.gameObject.GetComponent<SpaceBehavior>();
+        transform.localPosition = spacePosition;
+    }
+    
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (_dragging) return;
+        if (!other.CompareTag("Space")) return;
 
-        if (!spaceBehavior.IsAvailable()) return;
-        if (spaceBehavior.AvailableSpaceInLayer())
+        var spaceBehavior = other.gameObject.GetComponent<SpaceBehavior>();
+
+        if (spaceBehavior.IsAvailable())
         {
-            _isTrigger = true;
-            spaceBehavior.FillData(this);
+            
         }
         else
         {
-            ResetToBeginning();
+            if (spaceBehavior.AvailableSpaceInLayer())
+            {
+                _isTrigger = true;
+                spaceBehavior.FillData(this);
+            }
+            else
+            {
+                ResetToBeginning();
+            }
         }
     }
 }

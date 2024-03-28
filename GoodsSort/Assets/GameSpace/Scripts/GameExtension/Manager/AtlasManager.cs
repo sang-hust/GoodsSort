@@ -8,12 +8,6 @@ public class AtlasManager : MMPersistentSingleton<AtlasManager>
 
     public Sprite GetSprite(string nameSprite)
     {
-#if UNITY_EDITOR
-        if (ui == null)
-        {
-            ui = Resources.Load<AtlasManager>("[AtlasManager]").ui;
-        }
-#endif
         return ui.GetSprite(nameSprite);
     }
 }
