@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -27,6 +26,17 @@ public class WrapperData : IInitialize
                 level = 1,
             };
     }
+
+    private void SaveOnClient()
+    {
+        
+    }
+    
+    public void ModifyLevel(int value)
+    {
+        _client.level += value;
+        SaveOnClient();
+    }
 }
 
 [Serializable]
@@ -45,12 +55,10 @@ public class SelfData
 [Serializable]
 public class LayerData
 {
-    public int maxSize;
     public List<ItemData> listItemData;
 
-    public LayerData(int maxSize, List<ItemData> listItemData)
+    public LayerData(List<ItemData> listItemData)
     {
-        this.maxSize = maxSize;
         this.listItemData = listItemData;
     }
 }
@@ -59,7 +67,7 @@ public class LayerData
 public class ItemData
 {
     public ItemTypeEnum itemType;
-
+    public ItemData() {}
     public ItemData(ItemTypeEnum itemTypeEnum)
     {
         itemType = itemTypeEnum;

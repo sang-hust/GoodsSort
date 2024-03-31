@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class SpaceBehavior : MonoBehaviour
 {
-    public ItemTypeEnum _itemTypeEnum = ItemTypeEnum.None;
+    [DisplayAsString] public ItemTypeEnum _itemTypeEnum = ItemTypeEnum.None;
+    [SerializeField] private ItemBehavior _itemPrefab;
     private int _indexSpace;
-    private bool _available;
     private LayerItemBehavior _layerItemBehavior;
+    private ItemBehavior _itemBehavior;
 
     /// <summary>
     /// Parent always Layer Item
@@ -17,27 +19,58 @@ public class SpaceBehavior : MonoBehaviour
         _layerItemBehavior = GetComponentInParent<LayerItemBehavior>();
     }
 
-    public void InitSpace(int indexSpace, ItemTypeEnum itemTypeEnum)
+    public void InitSpace(int indexSpace, ItemData itemData)
     {
         _indexSpace = indexSpace;
-        _itemTypeEnum = itemTypeEnum;
-        _available = _itemTypeEnum == ItemTypeEnum.None;
+        if (itemData.itemType == ItemTypeEnum.None)
+        {
+            _itemBehavior = null;
+        }
+        else
+        {
+            _itemBehavior = Instantiate(_itemPrefab, transform);
+            _itemBehavior.InitItem(itemData).UpdateItemPosition(this);
+        }
+    }
+
+    public void UpdateData(ItemBehavior itemBehavior)
+    {
+        _itemBehavior = itemBehavior;
+        
     }
     
     public bool IsAvailable()
     {
-        return _available;
+        return _itemBehavior == null;
     }
 
-    public bool AvailableSpaceInLayer()
+    public bool ItemCanFillThisLayer()
+    {
+        if (_itemBehavior == null)
+        {
+            return true;
+        }
+
+        if (AvailableSpaceInLayer())
+        {
+            return true;
+        }
+        
+        return false;
+    }
+
+    private bool AvailableSpaceInLayer()
     {
         return _layerItemBehavior.AvailableEmptySpace();
     }
 
     public void FillData(ItemBehavior itemBehavior)
     {
-        _itemTypeEnum = itemBehavior._itemTypeEnum;
-        //_layerItemBehavior.FillItemToSpace(itemBehavior._itemTypeEnum);
-        itemBehavior.UpdatePosition(transform.position);
+        _layerItemBehavior.FillItemToSpace(_indexSpace, itemBehavior);
+    }
+
+    public void RemoveData()
+    {
+        _itemBehavior = null;
     }
 }

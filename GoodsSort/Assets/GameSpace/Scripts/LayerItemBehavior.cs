@@ -6,18 +6,24 @@ using UnityEngine;
 
 public class LayerItemBehavior : MonoBehaviour
 {
-    [SerializeField] private List<ItemBehavior> _listItem; // get from SO
-    [SerializeField] private List<SpaceBehavior> _listSpace;
+    [SerializeField] private SpaceBehavior _spacePrefab;
+    public List<ItemBehavior> ListItem;
+    private List<SpaceBehavior> _listSpace;
+    private SelfBehavior _selfBehavior;
 
     private void Start()
     {
-        _listItem = new List<ItemBehavior>();
-        
-        for (var i = 0; i < _listItem.Count; i++)
-        {
-            _listSpace[i].InitSpace(i, _listItem[i]._itemTypeEnum);
-        }
+        _selfBehavior = GetComponentInParent<SelfBehavior>();
+    }
 
+    public void InitLayerItem(LayerData layerData)
+    {
+        for (var i = 0; i < layerData.listItemData.Count; i++)
+        {
+            var space = Instantiate(_spacePrefab, transform);
+            space.InitSpace(i, layerData.listItemData[i]);
+            _listSpace.Add(space);
+        }
     }
 
     public bool AvailableEmptySpace()
@@ -25,8 +31,30 @@ public class LayerItemBehavior : MonoBehaviour
         return _listSpace.Any(space => space.IsAvailable());
     }
 
-    public void FillItemToSpace(int indexSpace, ItemTypeEnum itemTypeEnum)
+    public void FillItemToSpace(int indexSpace, ItemBehavior itemBehavior)
     {
-        //_listSpace[]
+        var itemType = itemBehavior.ItemTypeEnum;
+        if (_listSpace[indexSpace].IsAvailable())
+        {
+            ListItem[indexSpace].ItemTypeEnum = itemType;
+            _listSpace[indexSpace].UpdateData(itemBehavior);
+            itemBehavior.UpdatePosition(_listSpace[indexSpace].transform);
+
+            _selfBehavior.UpdateSelf();
+            return;
+        }
+
+        for (var i = 0; i < _listSpace.Count; i++)
+        {
+            if (!_listSpace[i].IsAvailable()) continue;
+            ListItem[i].ItemTypeEnum = itemType;
+            _listSpace[i].UpdateData(itemBehavior);
+            itemBehavior.UpdatePosition(_listSpace[i].transform);
+
+            _selfBehavior.UpdateSelf();
+            break;
+        }
     }
+
+
 }

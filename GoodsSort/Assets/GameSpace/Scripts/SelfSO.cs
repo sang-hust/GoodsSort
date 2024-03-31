@@ -5,5 +5,5 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "SelfSO", menuName = "ScriptableObjects/SelfSO", order = 0)]
 public class SelfSO : SerializedScriptableObject
 {
-    public List<SelfData> ListSelfData;
+    public Dictionary<int, List<SelfData>> LevelData;
 }

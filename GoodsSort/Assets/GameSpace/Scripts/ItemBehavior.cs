@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -8,28 +5,30 @@ using Random = UnityEngine.Random;
 public class ItemBehavior : MonoBehaviour
 {
     [SerializeField] private Image _imageItem;
-    public ItemTypeEnum _itemTypeEnum;
+    private ItemTypeEnum _itemTypeEnum;
+    public ItemTypeEnum ItemTypeEnum
+    {
+        get => _itemTypeEnum;
+        set => _itemTypeEnum = value;
+    }
+    
     private ItemData _itemData;
-    private Vector3 _startPosition;
     private bool _dragging;
     private Vector3 _offset;
     private bool _isTrigger;
+    private SpaceBehavior _spaceBehavior;
 
-    public void Start()
+    public ItemBehavior InitItem(ItemData itemData)
     {
-        var rand = Random.Range(0, 7);
-        InitItem((ItemTypeEnum) rand);
+        _itemData = itemData;
+        _imageItem.sprite = AtlasManager.Instance.GetSprite(itemData.itemType.ToString());
+
+        return this;
     }
 
-    public void InitItem(ItemTypeEnum itemTypeEnum, Vector3 startPosition = default)
+    public void UpdateItemPosition(SpaceBehavior spaceBehavior)
     {
-        _itemTypeEnum = itemTypeEnum;
-        UIItem();
-    }
-
-    private void UIItem()
-    {
-        _imageItem.sprite = AtlasManager.Instance.GetSprite(_itemTypeEnum.ToString());
+        _spaceBehavior = spaceBehavior;
     }
 
     private void Update()
@@ -54,17 +53,21 @@ public class ItemBehavior : MonoBehaviour
         _dragging = false;
     }
 
-    private void ResetToBeginning()
+    /// <summary>
+    /// Not match any space
+    /// </summary>
+    private void ResetPosition()
     {  
-        transform.localPosition = new Vector3(0, 0, 0);
+        transform.localPosition = Vector3.zero;
     }
 
     /// <summary>
     /// To new space
     /// </summary>
-    public void UpdatePosition(Vector3 spacePosition)
+    public void UpdatePosition(Transform spaceTransform)
     {
-        transform.localPosition = spacePosition;
+        transform.parent = spaceTransform;
+        transform.localPosition = Vector3.zero;
     }
     
     private void OnTriggerStay2D(Collider2D other)
@@ -74,21 +77,14 @@ public class ItemBehavior : MonoBehaviour
 
         var spaceBehavior = other.gameObject.GetComponent<SpaceBehavior>();
 
-        if (spaceBehavior.IsAvailable())
+        if (spaceBehavior.ItemCanFillThisLayer())
         {
-            
+            _spaceBehavior.RemoveData();
+            spaceBehavior.FillData(this);
         }
         else
         {
-            if (spaceBehavior.AvailableSpaceInLayer())
-            {
-                _isTrigger = true;
-                spaceBehavior.FillData(this);
-            }
-            else
-            {
-                ResetToBeginning();
-            }
+            ResetPosition();
         }
     }
 }
