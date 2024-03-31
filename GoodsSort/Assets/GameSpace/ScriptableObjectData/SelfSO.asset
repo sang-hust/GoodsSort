@@ -20,5 +20,7 @@ MonoBehaviour:
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes: []
-  ListSelfData: []
+    SerializationNodes:
+    - Name: LevelData
+      Entry: 6
+      Data: 
