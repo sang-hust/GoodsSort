@@ -5,9 +5,8 @@ using UnityEngine;
 
 public class SpaceBehavior : MonoBehaviour
 {
-    [DisplayAsString] public ItemTypeEnum _itemTypeEnum = ItemTypeEnum.None;
-    [SerializeField] private ItemBehavior _itemPrefab;
     private int _indexSpace;
+    private bool _available;
     private LayerItemBehavior _layerItemBehavior;
     private ItemBehavior _itemBehavior;
 
@@ -19,24 +18,14 @@ public class SpaceBehavior : MonoBehaviour
         _layerItemBehavior = GetComponentInParent<LayerItemBehavior>();
     }
 
-    public void InitSpace(int indexSpace, ItemData itemData)
+    public void InitSpace(int indexSpace)
     {
         _indexSpace = indexSpace;
-        if (itemData.itemType == ItemTypeEnum.None)
-        {
-            _itemBehavior = null;
-        }
-        else
-        {
-            _itemBehavior = Instantiate(_itemPrefab, transform);
-            _itemBehavior.InitItem(itemData).UpdateItemPosition(this);
-        }
     }
 
-    public void UpdateData(ItemBehavior itemBehavior)
+    public void UpdateData(bool itemBehavior)
     {
         _itemBehavior = itemBehavior;
-        
     }
     
     public bool IsAvailable()
@@ -71,6 +60,6 @@ public class SpaceBehavior : MonoBehaviour
 
     public void RemoveData()
     {
-        _itemBehavior = null;
+        _layerItemBehavior.RemoveItemInSpace(_indexSpace);
     }
 }

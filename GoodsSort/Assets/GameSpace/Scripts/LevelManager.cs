@@ -14,6 +14,7 @@ public class LevelManager : MMSingleton<LevelManager>
     private void Start()
     {
         GameDataCenter.Instance.GetOrCreate(out playerData);
+        InitLevel();
     }
 
     private void InitLevel()
@@ -21,6 +22,7 @@ public class LevelManager : MMSingleton<LevelManager>
         var level = playerData.Client.level;
         var levelData = selfSo.LevelData[level];
 
+        _listSelf = new List<SelfBehavior>();
         for (var i = 0; i < levelData.Count; i++)
         {
             var self = Instantiate(selfPrefab, gridTransform);

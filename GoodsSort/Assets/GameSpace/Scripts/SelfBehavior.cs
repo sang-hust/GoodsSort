@@ -18,6 +18,7 @@ public class SelfBehavior : MonoBehaviour
 
     private void InitLayerItem()
     {
+        _listLayerItem = new List<LayerItemBehavior>();
         foreach (var layerData in selfData.listLayerData)
         {
             var layerItem = Instantiate(_layerItemPrefab, transform);

@@ -24,7 +24,7 @@ public class WrapperData : IInitialize
             : new DataPlayer()
             {
                 day = 0,
-                level = 1,
+                level = 0,
             };
     }
 

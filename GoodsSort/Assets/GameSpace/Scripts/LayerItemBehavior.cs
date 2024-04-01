@@ -7,8 +7,9 @@ using UnityEngine;
 public class LayerItemBehavior : MonoBehaviour
 {
     [SerializeField] private SpaceBehavior _spacePrefab;
+    [SerializeField] private ItemBehavior _itemPrefab;
+
     public List<ItemBehavior> ListItem;
-    private List<SpaceBehavior> _listSpace;
     private SelfBehavior _selfBehavior;
 
     private void Start()
@@ -18,11 +19,22 @@ public class LayerItemBehavior : MonoBehaviour
 
     public void InitLayerItem(LayerData layerData)
     {
+        ListItem = new List<ItemBehavior>();
+
         for (var i = 0; i < layerData.listItemData.Count; i++)
         {
             var space = Instantiate(_spacePrefab, transform);
-            space.InitSpace(i, layerData.listItemData[i]);
+            ItemBehavior itemBehavior = null;
+            
+            if (layerData.listItemData[i].itemType != ItemTypeEnum.None)
+            {
+                itemBehavior = Instantiate(_itemPrefab, transform);
+                itemBehavior.InitItem(layerData.listItemData[i]).UpdateItemPosition(space);
+            }
+            
+            space.InitSpace(i, itemBehavior);
             _listSpace.Add(space);
+            ListItem.Add(itemBehavior);
         }
     }
 
@@ -56,5 +68,8 @@ public class LayerItemBehavior : MonoBehaviour
         }
     }
 
-
+    public void RemoveItemInSpace(int indexSpace)
+    {
+        
+    }
 }
