@@ -31,6 +31,8 @@ public class ItemBehavior : MonoBehaviour
         _spaceBehavior = spaceBehavior;
     }
 
+    #region Dragging Mode
+
     private void Update()
     {
         if (_dragging)
@@ -87,4 +89,6 @@ public class ItemBehavior : MonoBehaviour
             ResetPosition();
         }
     }
+
+    #endregion
 }

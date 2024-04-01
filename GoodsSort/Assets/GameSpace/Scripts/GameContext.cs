@@ -15,3 +15,9 @@ public enum ItemTypeEnum
     item_05,
     item_06
 }
+
+public enum ItemMoveMode
+{
+    TapAction = 0,
+    DragDrop
+}

@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,7 +7,8 @@ public class LayerItemBehavior : MonoBehaviour
     [SerializeField] private SpaceBehavior _spacePrefab;
     [SerializeField] private ItemBehavior _itemPrefab;
 
-    public List<ItemBehavior> ListItem;
+    public List<ItemBehavior> ListItem = new List<ItemBehavior>();
+    private List<SpaceBehavior> _listSpace = new List<SpaceBehavior>();
     private SelfBehavior _selfBehavior;
 
     private void Start()
@@ -19,8 +18,6 @@ public class LayerItemBehavior : MonoBehaviour
 
     public void InitLayerItem(LayerData layerData)
     {
-        ListItem = new List<ItemBehavior>();
-
         for (var i = 0; i < layerData.listItemData.Count; i++)
         {
             var space = Instantiate(_spacePrefab, transform);
@@ -31,45 +28,47 @@ public class LayerItemBehavior : MonoBehaviour
                 itemBehavior = Instantiate(_itemPrefab, transform);
                 itemBehavior.InitItem(layerData.listItemData[i]).UpdateItemPosition(space);
             }
-            
-            space.InitSpace(i, itemBehavior);
-            _listSpace.Add(space);
             ListItem.Add(itemBehavior);
+            space.InitSpace(i, itemBehavior == null);
+            _listSpace.Add(space);
         }
     }
 
     public bool AvailableEmptySpace()
     {
-        return _listSpace.Any(space => space.IsAvailable());
+        return ListItem.Any(itemBehavior => itemBehavior == null);
     }
 
     public void FillItemToSpace(int indexSpace, ItemBehavior itemBehavior)
     {
-        var itemType = itemBehavior.ItemTypeEnum;
-        if (_listSpace[indexSpace].IsAvailable())
+        // fill this
+        if (ListItem[indexSpace] == null)
         {
-            ListItem[indexSpace].ItemTypeEnum = itemType;
-            _listSpace[indexSpace].UpdateData(itemBehavior);
+            ListItem[indexSpace] = itemBehavior;
+            _listSpace[indexSpace].UpdateStatus(false);
             itemBehavior.UpdatePosition(_listSpace[indexSpace].transform);
-
+            
             _selfBehavior.UpdateSelf();
-            return;
         }
-
-        for (var i = 0; i < _listSpace.Count; i++)
+        // find fill
+        else
         {
-            if (!_listSpace[i].IsAvailable()) continue;
-            ListItem[i].ItemTypeEnum = itemType;
-            _listSpace[i].UpdateData(itemBehavior);
-            itemBehavior.UpdatePosition(_listSpace[i].transform);
+            foreach (var space in _listSpace)
+            {
+                if (!space.IsAvailable()) continue;
+                ListItem[indexSpace] = itemBehavior;
+                space.UpdateStatus(false);
+                itemBehavior.UpdatePosition(space.transform);
 
-            _selfBehavior.UpdateSelf();
-            break;
+                _selfBehavior.UpdateSelf();
+                break;
+            }
         }
     }
 
     public void RemoveItemInSpace(int indexSpace)
     {
-        
+        ListItem[indexSpace] = null;
+        _listSpace[indexSpace].UpdateStatus(true);
     }
 }

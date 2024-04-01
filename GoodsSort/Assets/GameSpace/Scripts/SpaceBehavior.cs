@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class SpaceBehavior : MonoBehaviour
@@ -8,7 +5,6 @@ public class SpaceBehavior : MonoBehaviour
     private int _indexSpace;
     private bool _available;
     private LayerItemBehavior _layerItemBehavior;
-    private ItemBehavior _itemBehavior;
 
     /// <summary>
     /// Parent always Layer Item
@@ -18,24 +14,25 @@ public class SpaceBehavior : MonoBehaviour
         _layerItemBehavior = GetComponentInParent<LayerItemBehavior>();
     }
 
-    public void InitSpace(int indexSpace)
+    public void InitSpace(int indexSpace, bool available)
     {
         _indexSpace = indexSpace;
+        _available = available;
     }
 
-    public void UpdateData(bool itemBehavior)
+    public void UpdateStatus(bool isAvailable)
     {
-        _itemBehavior = itemBehavior;
+        _available = isAvailable;
     }
     
     public bool IsAvailable()
     {
-        return _itemBehavior == null;
+        return _available;
     }
 
     public bool ItemCanFillThisLayer()
     {
-        if (_itemBehavior == null)
+        if (_available)
         {
             return true;
         }

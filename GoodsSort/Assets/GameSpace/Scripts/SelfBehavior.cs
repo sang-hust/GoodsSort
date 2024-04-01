@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,7 +22,8 @@ public class SelfBehavior : MonoBehaviour
         {
             var layerItem = Instantiate(_layerItemPrefab, transform);
             _listLayerItem.Add(layerItem);
-            layerItem.InitLayerItem(layerData);    
+            layerItem.InitLayerItem(layerData);
+            // Add fade here
         }
 
         _currentLayerItem = _listLayerItem[0];
