@@ -1,16 +1,6 @@
+using System;
 using System.Collections;
 using UnityEngine;
-
-public enum ItemTypeEnum 
-{
-    None,
-    item_01,
-    item_02,
-    item_03,
-    item_04,
-    item_05,
-    item_06
-}
 
 public class BaseCollector
 {
@@ -37,6 +27,7 @@ public class BaseCollector
             }
         }
     }
+
     public static void Claim(IReward item, bool isSendMess = true)
     {
         if (isSendMess)
@@ -55,12 +46,13 @@ public interface IReward
     void OnClaimed();
     void OnClaimedNotSend();
 }
+
 public struct RewardInfo : IReward
 {
     public string rewardKey;
     public int rewardAmount;
     public string rewardData;
-    
+
     public RewardInfo(ItemTypeEnum rewardKey, int rewardAmount)
     {
         this.rewardKey = rewardKey.ToString();
@@ -88,20 +80,21 @@ public struct RewardInfo : IReward
         this.rewardAmount = rewardAmount;
         this.rewardData = data;
     }
+
     public static implicit operator ItemTypeEnum(RewardInfo rw) => rw.rewardKey.Parse(ItemTypeEnum.None);
-    
+
     public void OnClaimed()
     {
         if (rewardAmount <= 0) return;
         //GameDataCenter.Instance.Get(out WrapperPlayer wrapperPlayer);
-       // wrapperPlayer.ModifyResourceAmount(this, rewardAmount);
+        // wrapperPlayer.ModifyResourceAmount(this, rewardAmount);
     }
 
     public void OnClaimedNotSend()
     {
         if (rewardAmount <= 0) return;
         //GameDataCenter.Instance.Get(out WrapperPlayer wrapperPlayer);
-       // wrapperPlayer.ModifyResourceAmountNotSend(this, rewardAmount);
+        // wrapperPlayer.ModifyResourceAmountNotSend(this, rewardAmount);
     }
 }
 
@@ -116,6 +109,7 @@ public class ResourceInHome
     {
         public int bonusValue;
     }
+
     public void Do()
     {
         //CoroutineChain.Start.Play(DoGold());

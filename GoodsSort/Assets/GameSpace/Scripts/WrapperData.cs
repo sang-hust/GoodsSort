@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Sirenix.Serialization;
 using UnityEngine;
 
 public struct DataPlayer
@@ -44,7 +45,6 @@ public class SelfData
 {
     public int idSelf;
     public List<LayerData> listLayerData;
-
     public SelfData(int idSelf, List<LayerData> listLayerData)
     {
         this.idSelf = idSelf;
@@ -66,8 +66,8 @@ public class LayerData
 [Serializable]
 public class ItemData
 {
+    
     public ItemTypeEnum itemType;
-    public ItemData() {}
     public ItemData(ItemTypeEnum itemTypeEnum)
     {
         itemType = itemTypeEnum;
