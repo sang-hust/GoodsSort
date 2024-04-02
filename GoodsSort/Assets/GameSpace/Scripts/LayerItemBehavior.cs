@@ -25,7 +25,7 @@ public class LayerItemBehavior : MonoBehaviour
             
             if (layerData.listItemData[i].itemType != ItemTypeEnum.None)
             {
-                itemBehavior = Instantiate(_itemPrefab, transform);
+                itemBehavior = Instantiate(_itemPrefab, space.transform);
                 itemBehavior.InitItem(layerData.listItemData[i]).UpdateItemPosition(space);
             }
             ListItem.Add(itemBehavior);
@@ -48,11 +48,14 @@ public class LayerItemBehavior : MonoBehaviour
             _listSpace[indexSpace].UpdateStatus(false);
             itemBehavior.UpdatePosition(_listSpace[indexSpace].transform);
             
-            _selfBehavior.UpdateSelf();
+            //_selfBehavior.UpdateSelf();
+            
+            Debug.LogError("Index Space Null");
         }
         // find fill
         else
         {
+            Debug.LogError("Index Space Not Null");
             foreach (var space in _listSpace)
             {
                 if (!space.IsAvailable()) continue;
@@ -60,7 +63,7 @@ public class LayerItemBehavior : MonoBehaviour
                 space.UpdateStatus(false);
                 itemBehavior.UpdatePosition(space.transform);
 
-                _selfBehavior.UpdateSelf();
+                //_selfBehavior.UpdateSelf();
                 break;
             }
         }

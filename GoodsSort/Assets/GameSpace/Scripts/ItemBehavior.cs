@@ -81,6 +81,7 @@ public class ItemBehavior : MonoBehaviour
 
         if (spaceBehavior.ItemCanFillThisLayer())
         {
+            Debug.LogError("Remove Data");
             _spaceBehavior.RemoveData();
             spaceBehavior.FillData(this);
         }

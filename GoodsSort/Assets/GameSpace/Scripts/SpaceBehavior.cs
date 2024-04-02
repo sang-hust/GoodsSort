@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class SpaceBehavior : MonoBehaviour
 {
-    private int _indexSpace;
+    [SerializeField] private int _indexSpace;
     private bool _available;
     private LayerItemBehavior _layerItemBehavior;
 
