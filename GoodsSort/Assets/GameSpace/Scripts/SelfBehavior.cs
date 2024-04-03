@@ -18,15 +18,16 @@ public class SelfBehavior : MonoBehaviour
     private void InitLayerItem()
     {
         _listLayerItem = new List<LayerItemBehavior>();
-        foreach (var layerData in selfData.listLayerData)
+
+        for (var i = selfData.listLayerData.Count - 1; i >= 0; i--)
         {
+            var layerData = selfData.listLayerData[i];
             var layerItem = Instantiate(_layerItemPrefab, transform);
             _listLayerItem.Add(layerItem);
             layerItem.InitLayerItem(layerData);
-            // Add fade here
         }
 
-        _currentLayerItem = _listLayerItem[0];
+        _currentLayerItem = _listLayerItem[_listLayerItem.Count - 1];
     }
 
     public int GetNumLayerCurrent()
@@ -38,14 +39,18 @@ public class SelfBehavior : MonoBehaviour
     {
         var checkDone = GameManager.Instance.CheckDoneLayer(_currentLayerItem.ListItem);
         if (!checkDone) return;
-        
-        DestroyImmediate(_listLayerItem[0]);
+
+        if (_listLayerItem.Count > 1)
+        {
+            DestroyImmediate(_listLayerItem[_listLayerItem.Count]);
+            _currentLayerItem = _listLayerItem[_listLayerItem.Count - 1];
+        }
         if (_listLayerItem.Count <= 0)
         {
             GameManager.Instance.winLoseManager.CheckWinAndNextLevel();
             return;
         } 
-        _currentLayerItem = _listLayerItem[0];
+        
         // Update UI
     }
 }

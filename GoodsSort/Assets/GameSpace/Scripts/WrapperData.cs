@@ -28,6 +28,7 @@ public class WrapperData : IInitialize
                 level = 0,
                 modeMoveItem = ItemMoveMode.DragDrop
             };
+        _client.level = 0;
     }
 
     private void SaveOnClient()

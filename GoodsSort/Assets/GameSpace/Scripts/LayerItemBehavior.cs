@@ -47,13 +47,13 @@ public class LayerItemBehavior : MonoBehaviour
             ListItem[indexSpace] = itemBehavior;
             _listSpace[indexSpace].UpdateStatus(false);
             itemBehavior.UpdatePosition(_listSpace[indexSpace].transform);
+            itemBehavior.UpdateItemPosition(_listSpace[indexSpace]);
             
             //_selfBehavior.UpdateSelf();
-            
-            Debug.LogError("Index Space Null");
+            return;
         }
         // find fill
-        else
+        //else
         {
             Debug.LogError("Index Space Not Null");
             foreach (var space in _listSpace)

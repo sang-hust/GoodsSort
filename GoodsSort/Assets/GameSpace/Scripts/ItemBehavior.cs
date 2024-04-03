@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -6,6 +7,8 @@ public class ItemBehavior : MonoBehaviour
 {
     [SerializeField] private Image _imageItem;
     private ItemTypeEnum _itemTypeEnum;
+    private SpaceBehavior spaceCache;
+    private SpaceBehavior spaceCacheInit;
     public ItemTypeEnum ItemTypeEnum
     {
         get => _itemTypeEnum;
@@ -53,6 +56,22 @@ public class ItemBehavior : MonoBehaviour
     public void OnUp()
     {
         _dragging = false;
+        if (spaceCache != null)
+        {
+            if (spaceCache.ItemCanFillThisLayer())
+            {
+                _spaceBehavior.RemoveData();
+                spaceCache.FillData(this);
+            }
+            else
+            {
+                ResetPosition();
+            }
+        }
+        else
+        {
+            ResetPosition();
+        }
     }
 
     /// <summary>
@@ -72,24 +91,16 @@ public class ItemBehavior : MonoBehaviour
         transform.localPosition = Vector3.zero;
     }
     
-    private void OnTriggerStay2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (_dragging) return;
+        if (!_dragging) return;
         if (!other.CompareTag("Space")) return;
-
-        var spaceBehavior = other.gameObject.GetComponent<SpaceBehavior>();
-
-        if (spaceBehavior.ItemCanFillThisLayer())
-        {
-            Debug.LogError("Remove Data");
-            _spaceBehavior.RemoveData();
-            spaceBehavior.FillData(this);
-        }
-        else
-        {
-            ResetPosition();
-        }
+        spaceCache = other.gameObject.GetComponent<SpaceBehavior>();
     }
 
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        spaceCache = null;
+    }
     #endregion
 }

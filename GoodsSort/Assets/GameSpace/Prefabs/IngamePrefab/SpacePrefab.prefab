@@ -51,8 +51,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1348ce39f47475b42b21d11087f00581, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _itemTypeEnum: 0
-  _itemPrefab: {fileID: 6278803456903340016, guid: de507b91e28204acd87af1d1b47d875d, type: 3}
+  _indexSpace: 0
+  _available: 0
+  _layerItemBehavior: {fileID: 0}
+  _collider2D: {fileID: 1933082391069702081}
 --- !u!61 &1933082391069702081
 BoxCollider2D:
   m_ObjectHideFlags: 0

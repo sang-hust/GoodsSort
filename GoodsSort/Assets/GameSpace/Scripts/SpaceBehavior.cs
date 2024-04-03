@@ -3,8 +3,9 @@ using UnityEngine;
 public class SpaceBehavior : MonoBehaviour
 {
     [SerializeField] private int _indexSpace;
-    private bool _available;
-    private LayerItemBehavior _layerItemBehavior;
+    [SerializeField] private bool _available;
+    [SerializeField] private LayerItemBehavior _layerItemBehavior;
+    [SerializeField] private BoxCollider2D _collider2D;
 
     /// <summary>
     /// Parent always Layer Item
@@ -17,12 +18,13 @@ public class SpaceBehavior : MonoBehaviour
     public void InitSpace(int indexSpace, bool available)
     {
         _indexSpace = indexSpace;
-        _available = available;
+        UpdateStatus(available);
     }
 
     public void UpdateStatus(bool isAvailable)
     {
         _available = isAvailable;
+        _collider2D.enabled = _available;
     }
     
     public bool IsAvailable()
