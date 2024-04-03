@@ -9,12 +9,8 @@ public class ItemBehavior : MonoBehaviour
     private ItemTypeEnum _itemTypeEnum;
     private SpaceBehavior spaceCache;
     private SpaceBehavior spaceCacheInit;
-    public ItemTypeEnum ItemTypeEnum
-    {
-        get => _itemTypeEnum;
-        set => _itemTypeEnum = value;
-    }
-    
+    private Transform cacheParent;
+    public ItemTypeEnum ItemTypeEnum => _itemTypeEnum;
     private ItemData _itemData;
     private bool _dragging;
     private Vector3 _offset;
@@ -24,6 +20,7 @@ public class ItemBehavior : MonoBehaviour
     public ItemBehavior InitItem(ItemData itemData)
     {
         _itemData = itemData;
+        _itemTypeEnum = _itemData.itemType;
         _imageItem.sprite = AtlasManager.Instance.GetSprite(itemData.itemType.ToString());
 
         return this;
@@ -50,12 +47,17 @@ public class ItemBehavior : MonoBehaviour
         {
             _offset = transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
         }
+
+        var itemTransform = transform;
+        cacheParent = itemTransform.parent;
+        itemTransform.parent = GameManager.Instance.ParentLayerItemHighest;
         _dragging = true;
     }
 
     public void OnUp()
     {
         _dragging = false;
+        transform.parent = cacheParent;
         if (spaceCache != null)
         {
             if (spaceCache.ItemCanFillThisLayer())
@@ -103,4 +105,9 @@ public class ItemBehavior : MonoBehaviour
         spaceCache = null;
     }
     #endregion
+
+    public void EffectDestroy()
+    {
+        
+    }
 }

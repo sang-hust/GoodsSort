@@ -5,10 +5,15 @@ using UnityEngine;
 
 public class WinLoseManager : MonoBehaviour
 {
+    public static int QuantityItemInLevel;
     public void CheckWinAndNextLevel()
     {
-        var isWin = GameManager.Instance.ListSelf.All(self => self.GetNumLayerCurrent() <= 0);
-        if (!isWin) return;
+        if (QuantityItemInLevel > 0)
+        {
+            // Chua Win
+            return;
+        }
+        
         
         LevelManager.Instance.NextLevel();
     }

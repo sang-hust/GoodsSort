@@ -7,7 +7,7 @@ public class LayerItemBehavior : MonoBehaviour
     [SerializeField] private SpaceBehavior _spacePrefab;
     [SerializeField] private ItemBehavior _itemPrefab;
 
-    public List<ItemBehavior> ListItem = new List<ItemBehavior>();
+    private List<ItemBehavior> _listItem = new List<ItemBehavior>();
     private List<SpaceBehavior> _listSpace = new List<SpaceBehavior>();
     private SelfBehavior _selfBehavior;
 
@@ -18,60 +18,80 @@ public class LayerItemBehavior : MonoBehaviour
 
     public void InitLayerItem(LayerData layerData)
     {
-        for (var i = 0; i < layerData.listItemData.Count; i++)
+        var listItemData = layerData.listItemData;
+        WinLoseManager.QuantityItemInLevel += listItemData.Count;
+        for (var i = 0; i < listItemData.Count; i++)
         {
             var space = Instantiate(_spacePrefab, transform);
             ItemBehavior itemBehavior = null;
             
-            if (layerData.listItemData[i].itemType != ItemTypeEnum.None)
+            if (listItemData[i].itemType != ItemTypeEnum.None)
             {
                 itemBehavior = Instantiate(_itemPrefab, space.transform);
-                itemBehavior.InitItem(layerData.listItemData[i]).UpdateItemPosition(space);
+                itemBehavior.InitItem(listItemData[i]).UpdateItemPosition(space);
             }
-            ListItem.Add(itemBehavior);
+            _listItem.Add(itemBehavior);
             space.InitSpace(i, itemBehavior == null);
             _listSpace.Add(space);
         }
     }
-
+    
     public bool AvailableEmptySpace()
     {
-        return ListItem.Any(itemBehavior => itemBehavior == null);
+        return _listItem.Any(itemBehavior => itemBehavior == null);
     }
 
     public void FillItemToSpace(int indexSpace, ItemBehavior itemBehavior)
     {
-        // fill this
-        if (ListItem[indexSpace] == null)
+        if (_listItem[indexSpace] == null)
         {
-            ListItem[indexSpace] = itemBehavior;
+            _listItem[indexSpace] = itemBehavior;
             _listSpace[indexSpace].UpdateStatus(false);
             itemBehavior.UpdatePosition(_listSpace[indexSpace].transform);
             itemBehavior.UpdateItemPosition(_listSpace[indexSpace]);
-            
-            //_selfBehavior.UpdateSelf();
-            return;
         }
-        // find fill
-        //else
+        else
         {
             Debug.LogError("Index Space Not Null");
             foreach (var space in _listSpace)
             {
                 if (!space.IsAvailable()) continue;
-                ListItem[indexSpace] = itemBehavior;
+                _listItem[indexSpace] = itemBehavior;
                 space.UpdateStatus(false);
                 itemBehavior.UpdatePosition(space.transform);
 
-                //_selfBehavior.UpdateSelf();
                 break;
             }
         }
+        
+        CheckLayerDone();
     }
 
     public void RemoveItemInSpace(int indexSpace)
     {
-        ListItem[indexSpace] = null;
+        _listItem[indexSpace] = null;
         _listSpace[indexSpace].UpdateStatus(true);
+    }
+
+    private void CheckLayerDone()
+    {
+        var itemTypeFirst = _listItem[0].ItemTypeEnum;
+        if (_listItem.Any(item => item.ItemTypeEnum != itemTypeFirst)) return;
+        
+        _selfBehavior.UpdateCurrentLayer();
+    }
+
+    public void ChangeToEmptyLayer()
+    {
+        foreach (var item in _listItem)
+        {
+            item.gameObject.SetActive(false);
+        }
+        
+        _listItem.Clear();
+        for (var i = 0; i < _listSpace.Count; i++)
+        {
+            _listItem.Add(null);
+        }
     }
 }

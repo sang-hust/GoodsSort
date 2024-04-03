@@ -1,15 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using MoreMountains.Tools;
 using UnityEngine;
 
 public class GameManager : MMSingleton<GameManager>
 {
-    public WinLoseManager winLoseManager;
-    [HideInInspector] public List<SelfBehavior> ListSelf = new List<SelfBehavior>();
-    public bool CheckDoneLayer(List<ItemBehavior> listItem)
+    public Transform ParentLayerItemHighest;
+    private WinLoseManager winLoseManager;
+
+    protected override void Awake()
     {
-        return listItem.All(item => item.ItemTypeEnum == listItem[0].ItemTypeEnum);
+        base.Awake();
+        winLoseManager = GetComponent<WinLoseManager>();
     }
 }
