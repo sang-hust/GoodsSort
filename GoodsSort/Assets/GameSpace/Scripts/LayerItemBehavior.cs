@@ -7,19 +7,21 @@ public class LayerItemBehavior : MonoBehaviour
     [SerializeField] private SpaceBehavior _spacePrefab;
     [SerializeField] private ItemBehavior _itemPrefab;
 
-    private List<ItemBehavior> _listItem = new List<ItemBehavior>();
+    [SerializeField] private List<ItemBehavior> _listItem = new List<ItemBehavior>();
     private List<SpaceBehavior> _listSpace = new List<SpaceBehavior>();
     private SelfBehavior _selfBehavior;
+    private int _indexLayer;
+    public int IndexLayer => _indexLayer;
 
     private void Start()
     {
         _selfBehavior = GetComponentInParent<SelfBehavior>();
     }
 
-    public void InitLayerItem(LayerData layerData)
+    public void InitLayerItem(int indexLayer, LayerData layerData)
     {
+        _indexLayer = indexLayer;
         var listItemData = layerData.listItemData;
-        WinLoseManager.QuantityItemInLevel += listItemData.Count;
         for (var i = 0; i < listItemData.Count; i++)
         {
             var space = Instantiate(_spacePrefab, transform);
@@ -29,6 +31,7 @@ public class LayerItemBehavior : MonoBehaviour
             {
                 itemBehavior = Instantiate(_itemPrefab, space.transform);
                 itemBehavior.InitItem(listItemData[i]).UpdateItemPosition(space);
+                GameManager.Instance.winLoseManager.UpdateQuantityItem(1);
             }
             _listItem.Add(itemBehavior);
             space.InitSpace(i, itemBehavior == null);
@@ -53,45 +56,91 @@ public class LayerItemBehavior : MonoBehaviour
         else
         {
             Debug.LogError("Index Space Not Null");
-            foreach (var space in _listSpace)
+            for (var i = 0; i < _listSpace.Count; i++)
             {
-                if (!space.IsAvailable()) continue;
-                _listItem[indexSpace] = itemBehavior;
-                space.UpdateStatus(false);
-                itemBehavior.UpdatePosition(space.transform);
+                if (!_listSpace[i].IsAvailable()) continue;
+                _listItem[i] = itemBehavior;
+                _listSpace[i].UpdateStatus(false);
+                itemBehavior.UpdatePosition(_listSpace[i].transform);
 
                 break;
             }
         }
-        
-        CheckLayerDone();
+
+        // var isDone = CheckLayerDone();
+        // if (!isDone) return;
+        //
+        // var winLoseManager = GameManager.Instance.winLoseManager;
+        // winLoseManager.UpdateQuantityItem(-_listSpace.Count);
+        //
+        // for (var i = 0; i < _listItem.Count; i++)
+        // {
+        //     _listItem[i].gameObject.SetActive(false);
+        //     _listItem[i] = null;
+        // }
+        //
+        // winLoseManager.CheckWinAndNextLevel();
+        // ExecuteEmptyLayer();
     }
 
     public void RemoveItemInSpace(int indexSpace)
     {
         _listItem[indexSpace] = null;
         _listSpace[indexSpace].UpdateStatus(true);
+
+        // var isEmpty = CheckLayerEmpty();
+        // if (!isEmpty) return;
+        // ExecuteEmptyLayer();
     }
 
-    private void CheckLayerDone()
+    /// <summary>
+    /// done -> all null -> exe
+    /// </summary>
+    /// <returns></returns>
+    private bool CheckLayerDone()
     {
-        var itemTypeFirst = _listItem[0].ItemTypeEnum;
-        if (_listItem.Any(item => item.ItemTypeEnum != itemTypeFirst)) return;
+        var firstItem = _listItem[0];
+
+        if (firstItem == null)
+        {
+            return false;
+        }
         
-        _selfBehavior.UpdateCurrentLayer();
+        foreach (var item in _listItem)
+        {
+            if (item == null)
+            {
+                return false;
+            }
+
+            if (item.ItemTypeEnum != firstItem.ItemTypeEnum)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
-    public void ChangeToEmptyLayer()
+    /// <summary>
+    /// all null -> exe
+    /// </summary>
+    /// <returns></returns>
+    private bool CheckLayerEmpty()
     {
         foreach (var item in _listItem)
         {
-            item.gameObject.SetActive(false);
+            if (item != null)
+            {
+                return false;
+            }
         }
-        
-        _listItem.Clear();
-        for (var i = 0; i < _listSpace.Count; i++)
-        {
-            _listItem.Add(null);
-        }
+
+        return true;
+    }
+
+    private void ExecuteEmptyLayer()
+    {
+        _selfBehavior.UpdateCurrentLayer();
     }
 }

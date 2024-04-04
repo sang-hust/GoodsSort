@@ -4,7 +4,7 @@ using UnityEngine;
 public class GameManager : MMSingleton<GameManager>
 {
     public Transform ParentLayerItemHighest;
-    private WinLoseManager winLoseManager;
+    [HideInInspector] public WinLoseManager winLoseManager;
 
     protected override void Awake()
     {

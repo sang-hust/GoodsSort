@@ -33,7 +33,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -54,7 +54,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spacePrefab: {fileID: 4947958384038590578, guid: 4e21faf3eb3e44e8f9f6202e4685ecb3, type: 3}
   _itemPrefab: {fileID: 6278803456903340016, guid: de507b91e28204acd87af1d1b47d875d, type: 3}
-  ListItem: []
+  _listItem: []
 --- !u!114 &8239018184629385878
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.5019608}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

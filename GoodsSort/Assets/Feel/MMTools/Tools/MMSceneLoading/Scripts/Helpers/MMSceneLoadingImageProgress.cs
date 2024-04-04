@@ -29,5 +29,12 @@ namespace MoreMountains.Tools
 		{
 			_image.fillAmount = newValue;
 		}
+		
+		private float minValue = -1200, maxValue = -6;
+		public void SetProgressSliced(float newValue)
+		{
+			var value = (maxValue - minValue) * newValue + minValue;
+			_image.rectTransform.offsetMax = new Vector2(value, _image.rectTransform.offsetMax.y);
+		}
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,14 +23,14 @@ namespace MoreMountains.Tools
 		[Tooltip("the amount of decimals to display")]
 		public int NumberOfDecimals = 0;
 
-		protected Text _text;
+		protected TMP_Text _text;
 
 		/// <summary>
 		/// On Awake we grab our Text and store it
 		/// </summary>
 		protected virtual void Awake()
 		{
-			_text = this.gameObject.GetComponent<Text>();
+			_text = this.gameObject.GetComponent<TMP_Text>();
 		}
         
 		/// <summary>

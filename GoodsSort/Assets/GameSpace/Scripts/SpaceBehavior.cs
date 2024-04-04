@@ -61,4 +61,9 @@ public class SpaceBehavior : MonoBehaviour
     {
         _layerItemBehavior.RemoveItemInSpace(_indexSpace);
     }
+
+    public int GetIndexLayer()
+    {
+        return _layerItemBehavior.IndexLayer;
+    }
 }

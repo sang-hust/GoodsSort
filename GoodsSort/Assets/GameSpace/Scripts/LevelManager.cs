@@ -33,8 +33,9 @@ public class LevelManager : MMSingleton<LevelManager>
 
     public void NextLevel()
     {
-        playerData.ModifyLevel(1);
+        //playerData.ModifyLevel(1);
         DestroyAllSelf();
+        LoadSceneManager.Instance.LoadScene("InGameScene");
         InitLevel();
     }
 

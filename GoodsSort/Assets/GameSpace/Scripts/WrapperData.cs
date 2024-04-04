@@ -33,7 +33,7 @@ public class WrapperData : IInitialize
 
     private void SaveOnClient()
     {
-        
+        PlayerPrefs.SetString(nameof(DataPlayer), JsonConvert.SerializeObject(_client));
     }
     
     public void ModifyLevel(int value)
