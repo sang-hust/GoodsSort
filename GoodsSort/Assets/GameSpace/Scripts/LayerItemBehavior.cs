@@ -66,33 +66,51 @@ public class LayerItemBehavior : MonoBehaviour
                 break;
             }
         }
-
-        // var isDone = CheckLayerDone();
-        // if (!isDone) return;
-        //
-        // var winLoseManager = GameManager.Instance.winLoseManager;
-        // winLoseManager.UpdateQuantityItem(-_listSpace.Count);
-        //
-        // for (var i = 0; i < _listItem.Count; i++)
-        // {
-        //     _listItem[i].gameObject.SetActive(false);
-        //     _listItem[i] = null;
-        // }
-        //
-        // winLoseManager.CheckWinAndNextLevel();
-        // ExecuteEmptyLayer();
     }
 
     public void RemoveItemInSpace(int indexSpace)
     {
         _listItem[indexSpace] = null;
         _listSpace[indexSpace].UpdateStatus(true);
-
-        // var isEmpty = CheckLayerEmpty();
-        // if (!isEmpty) return;
-        // ExecuteEmptyLayer();
     }
 
+    public void UpdateLayerAfterAction()
+    {
+        var haveEmptySpace = true;
+        foreach (var item in _listItem)
+        {
+            if (item != null)
+            {
+                haveEmptySpace = false;
+                break;
+            }
+        }
+
+        if (haveEmptySpace)
+        {
+            var isEmpty = CheckLayerEmpty();
+            if (!isEmpty) return;
+            ExecuteEmptyLayer();
+        }
+        else
+        {
+            var isDone = CheckLayerDone();
+            if (!isDone) return;
+            
+            var winLoseManager = GameManager.Instance.winLoseManager;
+            winLoseManager.UpdateQuantityItem(-_listSpace.Count);
+            
+            for (var i = 0; i < _listItem.Count; i++)
+            {
+                 _listItem[i].gameObject.SetActive(false);
+                 _listItem[i] = null;
+            }
+            
+            winLoseManager.CheckWinAndNextLevel();
+            ExecuteEmptyLayer();
+        }
+    }
+    
     /// <summary>
     /// done -> all null -> exe
     /// </summary>
@@ -142,5 +160,10 @@ public class LayerItemBehavior : MonoBehaviour
     private void ExecuteEmptyLayer()
     {
         _selfBehavior.UpdateCurrentLayer();
+    }
+
+    public int GetIndexSelf()
+    {
+        return _selfBehavior.IndexSelf;
     }
 }

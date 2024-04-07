@@ -6,7 +6,7 @@ public class SpaceBehavior : MonoBehaviour
     [SerializeField] private bool _available;
     [SerializeField] private LayerItemBehavior _layerItemBehavior;
     [SerializeField] private BoxCollider2D _collider2D;
-
+    
     /// <summary>
     /// Parent always Layer Item
     /// </summary>
@@ -62,8 +62,13 @@ public class SpaceBehavior : MonoBehaviour
         _layerItemBehavior.RemoveItemInSpace(_indexSpace);
     }
 
-    public int GetIndexLayer()
+    public int GetIndexSelf()
     {
-        return _layerItemBehavior.IndexLayer;
+        return _layerItemBehavior.GetIndexSelf();
+    }
+    
+    public void UpdateLayer()
+    {
+        _layerItemBehavior.UpdateLayerAfterAction();
     }
 }

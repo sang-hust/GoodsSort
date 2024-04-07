@@ -11,4 +11,17 @@ public class GameManager : MMSingleton<GameManager>
         base.Awake();
         winLoseManager = GetComponent<WinLoseManager>();
     }
+
+    public void CheckDoneLayer(SpaceBehavior spaceStart, SpaceBehavior spaceEnd)
+    {
+        var indexSelfStart = spaceStart.GetIndexSelf();
+        var indexSelfEnd = spaceEnd.GetIndexSelf();
+        Debug.LogError("Self Start: " + indexSelfStart);
+        Debug.LogError("Self End: " + indexSelfEnd);
+        if (indexSelfStart == indexSelfEnd) return;
+        
+        spaceStart.UpdateLayer();
+        spaceEnd.UpdateLayer();
+        
+    }
 }

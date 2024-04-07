@@ -8,7 +8,6 @@ public class ItemBehavior : MonoBehaviour
     [SerializeField] private Image _imageItem;
     private ItemTypeEnum _itemTypeEnum;
     private SpaceBehavior spaceCache;
-    private SpaceBehavior spaceCacheInit;
     private Transform cacheParent;
     public ItemTypeEnum ItemTypeEnum => _itemTypeEnum;
     private ItemData _itemData;
@@ -16,6 +15,10 @@ public class ItemBehavior : MonoBehaviour
     private Vector3 _offset;
     private bool _isTrigger;
     private SpaceBehavior _spaceBehavior;
+    
+    private SpaceBehavior spaceStart;
+    private SpaceBehavior spaceEnd;
+
 
     public ItemBehavior InitItem(ItemData itemData)
     {
@@ -62,8 +65,13 @@ public class ItemBehavior : MonoBehaviour
         {
             if (spaceCache.ItemCanFillThisLayer())
             {
+                spaceEnd = spaceCache;
+                spaceStart = _spaceBehavior;
+                    
                 _spaceBehavior.RemoveData();
                 spaceCache.FillData(this);
+                
+                GameManager.Instance.CheckDoneLayer(spaceStart, spaceEnd);
             }
             else
             {
@@ -80,7 +88,7 @@ public class ItemBehavior : MonoBehaviour
     /// Not match any space
     /// </summary>
     private void ResetPosition()
-    {  
+    {
         transform.localPosition = Vector3.zero;
     }
 
