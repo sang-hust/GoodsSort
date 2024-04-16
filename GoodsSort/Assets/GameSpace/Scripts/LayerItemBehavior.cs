@@ -170,4 +170,12 @@ public class LayerItemBehavior : MonoBehaviour
     {
         return _selfBehavior.IndexSelf;
     }
+
+    public void ClearFadeItem()
+    {
+        foreach (var item in _listItem)
+        {
+            item.ClearFade();
+        }
+    }
 }

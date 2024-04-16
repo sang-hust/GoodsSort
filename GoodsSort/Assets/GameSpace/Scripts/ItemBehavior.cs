@@ -6,6 +6,7 @@ using Random = UnityEngine.Random;
 public class ItemBehavior : MonoBehaviour
 {
     [SerializeField] private Image _imageItem;
+    [SerializeField] private Image _imageItemFade;
     private ItemTypeEnum _itemTypeEnum;
     private SpaceBehavior spaceCache;
     private Transform cacheParent;
@@ -118,5 +119,10 @@ public class ItemBehavior : MonoBehaviour
     public void EffectDestroy()
     {
         
+    }
+
+    public void ClearFade()
+    {
+        _imageItemFade.gameObject.SetActive(false);
     }
 }

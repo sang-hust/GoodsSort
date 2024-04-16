@@ -31,6 +31,7 @@ public class SelfBehavior : MonoBehaviour
         {
             _listLayerItem.Add(listLayerItemCache[i]);
         }
+        ActiveItemHighestLayer();
     }
 
     public void UpdateCurrentLayer()
@@ -40,5 +41,11 @@ public class SelfBehavior : MonoBehaviour
         
         _listLayerItem[0].gameObject.SetActive(false);
         _listLayerItem.RemoveAt(0);
+        ActiveItemHighestLayer();
+    }
+
+    private void ActiveItemHighestLayer()
+    {
+        _listLayerItem[0].ClearFadeItem();
     }
 }
