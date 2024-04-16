@@ -24,4 +24,9 @@ public class GameManager : MMSingleton<GameManager>
         spaceEnd.UpdateLayer();
         
     }
+
+    public void OnReplay()
+    {
+        LevelManager.Instance.OnReplay();
+    }
 }

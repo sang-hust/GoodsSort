@@ -159,6 +159,10 @@ public class LayerItemBehavior : MonoBehaviour
 
     private void ExecuteEmptyLayer()
     {
+        foreach (var space in _listSpace)
+        {
+            space.UpdateStatus(true);
+        }
         _selfBehavior.UpdateCurrentLayer();
     }
 

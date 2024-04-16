@@ -28,7 +28,6 @@ public class WrapperData : IInitialize
                 level = 0,
                 modeMoveItem = ItemMoveMode.DragDrop
             };
-        _client.level = 0;
     }
 
     private void SaveOnClient()
@@ -38,7 +37,14 @@ public class WrapperData : IInitialize
     
     public void ModifyLevel(int value)
     {
-        _client.level += value;
+        if (_client.level >= 10)
+        {
+            _client.level = 0;
+        }
+        else
+        {
+            _client.level += value;
+        }
         SaveOnClient();
     }
 

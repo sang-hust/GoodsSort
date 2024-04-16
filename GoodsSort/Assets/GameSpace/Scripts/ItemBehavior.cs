@@ -25,6 +25,7 @@ public class ItemBehavior : MonoBehaviour
         _itemData = itemData;
         _itemTypeEnum = _itemData.itemType;
         _imageItem.sprite = AtlasManager.Instance.GetSprite(itemData.itemType.ToString());
+        _imageItem.SetNativeSize();
 
         return this;
     }
