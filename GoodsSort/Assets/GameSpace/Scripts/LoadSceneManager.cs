@@ -24,6 +24,6 @@ public class LoadSceneManager : MMPersistentSingleton<LoadSceneManager>
     {
         //LevelManager.LoadDataCacheNext();
         yield return new WaitForSecondsRealtime(2);
-        LoadScene("InGameScene");
+        LoadScene("HomeScene");
     }
 }

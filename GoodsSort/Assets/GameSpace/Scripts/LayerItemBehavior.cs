@@ -173,7 +173,7 @@ public class LayerItemBehavior : MonoBehaviour
 
     public void ClearFadeItem()
     {
-        foreach (var item in _listItem)
+        foreach (var item in _listItem.Where(item => item != null))
         {
             item.ClearFade();
         }

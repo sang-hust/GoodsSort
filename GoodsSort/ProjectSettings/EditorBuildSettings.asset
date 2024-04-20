@@ -12,6 +12,12 @@ EditorBuildSettings:
     path: Assets/GameSpace/Scenes/LoadingScene.unity
     guid: 4766ef7f083e4434ca440cea4ef7b187
   - enabled: 1
+    path: Assets/GameSpace/Scenes/HomeScene.unity
+    guid: 4ef6c621c7d3d455ca77853da0b8bfa3
+  - enabled: 1
     path: Assets/GameSpace/Scenes/InGameScene.unity
     guid: 24459dd1ff6763040a2c165866ae12f5
+  - enabled: 1
+    path: Assets/GameSpace/Scenes/SceneLevelGD.unity
+    guid: 6e8de502eee874198bac416e520b025c
   m_configObjects: {}

@@ -8,6 +8,7 @@ public struct DataPlayer
 {
     public int day;
     public int level;
+    public int heart;
     public ItemMoveMode modeMoveItem;
 }
 
@@ -26,9 +27,10 @@ public class WrapperData : IInitialize
             {
                 day = 0,
                 level = 0,
+                heart = 5,
                 modeMoveItem = ItemMoveMode.DragDrop
             };
-    }
+    }   
 
     private void SaveOnClient()
     {
@@ -48,6 +50,12 @@ public class WrapperData : IInitialize
         SaveOnClient();
     }
 
+    public void ModifyHeart(int value)
+    {
+        _client.heart -= value;
+        SaveOnClient();
+    }
+    
     public void ModifyModeItemMove(ItemMoveMode itemMoveMode)
     {
         _client.modeMoveItem = itemMoveMode;

@@ -20,15 +20,34 @@ public class ItemBehavior : MonoBehaviour
     private SpaceBehavior spaceStart;
     private SpaceBehavior spaceEnd;
 
-
+    private const float heightDefault = 154f;
+    
     public ItemBehavior InitItem(ItemData itemData)
     {
         _itemData = itemData;
         _itemTypeEnum = _itemData.itemType;
         _imageItem.sprite = AtlasManager.Instance.GetSprite(itemData.itemType.ToString());
+        _imageItemFade.sprite = AtlasManager.Instance.GetSprite(itemData.itemType.ToString());
         _imageItem.SetNativeSize();
+        _imageItemFade.SetNativeSize();
 
+        var height = _imageItem.rectTransform.rect.height;
+        ChangePosition(height);
+        
         return this;
+    }
+
+    private void ChangePosition(float height)
+    {
+        if (height > heightDefault)
+        {
+            var pivot = (height - heightDefault) / 2;
+            var itemLocalPosition = transform.localPosition;
+            itemLocalPosition = new Vector3(itemLocalPosition.x, itemLocalPosition.y + pivot,
+                itemLocalPosition.z);
+            _imageItem.transform.localPosition = itemLocalPosition;
+            _imageItemFade.transform.localPosition = itemLocalPosition;
+        }
     }
 
     public void UpdateItemPosition(SpaceBehavior spaceBehavior)
