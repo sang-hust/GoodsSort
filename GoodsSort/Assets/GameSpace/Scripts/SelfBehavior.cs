@@ -5,9 +5,10 @@ public class SelfBehavior : MonoBehaviour
 {
     [SerializeField] private LayerItemBehavior _layerItemPrefab;
     [SerializeField] private List<LayerItemBehavior> _listLayerItem = new List<LayerItemBehavior>();
+    public List<LayerItemBehavior> ListLayerItem => _listLayerItem;
     private SelfData _selfData;
     public int IndexSelf => _indexSelf;
-    private int _indexSelf;
+    public int _indexSelf;
     public void InitData(SelfData selfData)
     {
         _indexSelf = selfData.idSelf;

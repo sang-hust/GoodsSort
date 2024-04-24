@@ -33,7 +33,11 @@ public class LevelManager : MMSingleton<LevelManager>
             var self = Instantiate(selfPrefab, gridTransform);
             self.InitData(levelData[i]);
             _listSelf.Add(self);
+            
+            GameManager.Instance.SetUniqueIDSelf(self);
         }
+        
+        GameManager.Instance.SetUniqueIDItem();
     }
 
     public void NextLevel()

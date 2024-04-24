@@ -9,6 +9,7 @@ public struct DataPlayer
     public int day;
     public int level;
     public int heart;
+    public int[] booster;
     public ItemMoveMode modeMoveItem;
 }
 
@@ -28,6 +29,7 @@ public class WrapperData : IInitialize
                 day = 0,
                 level = 0,
                 heart = 5,
+                booster = new int[] { 5, 5, 5, 5},
                 modeMoveItem = ItemMoveMode.DragDrop
             };
     }   
@@ -53,6 +55,12 @@ public class WrapperData : IInitialize
     public void ModifyHeart(int value)
     {
         _client.heart -= value;
+        SaveOnClient();
+    }
+    
+    public void ModifyBooster(int indexBooster, int value)
+    {
+        _client.booster[indexBooster] -= value;
         SaveOnClient();
     }
     
@@ -89,7 +97,6 @@ public class LayerData
 [Serializable]
 public class ItemData
 {
-    
     public ItemTypeEnum itemType;
     public ItemData(ItemTypeEnum itemTypeEnum)
     {

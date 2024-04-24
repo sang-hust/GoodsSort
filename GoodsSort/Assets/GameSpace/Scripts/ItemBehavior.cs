@@ -5,6 +5,7 @@ using Random = UnityEngine.Random;
 
 public class ItemBehavior : MonoBehaviour
 {
+    public int uniqueId;
     [SerializeField] private Image _imageItem;
     [SerializeField] private Image _imageItemFade;
     private ItemTypeEnum _itemTypeEnum;
@@ -26,15 +27,20 @@ public class ItemBehavior : MonoBehaviour
     {
         _itemData = itemData;
         _itemTypeEnum = _itemData.itemType;
-        _imageItem.sprite = AtlasManager.Instance.GetSprite(itemData.itemType.ToString());
-        _imageItemFade.sprite = AtlasManager.Instance.GetSprite(itemData.itemType.ToString());
+        
+        SetUIItem();
+        return this;
+    }
+
+    private void SetUIItem()
+    {
+        _imageItem.sprite = AtlasManager.Instance.GetSprite(_itemTypeEnum.ToString());
+        _imageItemFade.sprite = AtlasManager.Instance.GetSprite(_itemTypeEnum.ToString());
         _imageItem.SetNativeSize();
         _imageItemFade.SetNativeSize();
 
         var height = _imageItem.rectTransform.rect.height;
         ChangePosition(height);
-        
-        return this;
     }
 
     private void ChangePosition(float height)
@@ -143,5 +149,12 @@ public class ItemBehavior : MonoBehaviour
     public void ClearFade()
     {
         _imageItemFade.gameObject.SetActive(false);
+    }
+
+    public void ChangeTypeItem(ItemTypeEnum itemType)
+    {
+        _itemTypeEnum = itemType;
+        
+        SetUIItem();
     }
 }

@@ -12,6 +12,7 @@ public class LayerItemBehavior : MonoBehaviour
     private SelfBehavior _selfBehavior;
     private int _indexLayer;
     public int IndexLayer => _indexLayer;
+    public List<ItemBehavior> ListItem => _listItem;
 
     private void Start()
     {
