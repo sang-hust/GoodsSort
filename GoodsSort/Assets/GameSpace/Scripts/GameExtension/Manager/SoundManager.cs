@@ -14,8 +14,8 @@ public class SoundManager : MMPersistentSingleton<SoundManager>
     [SerializeField] private AudioMixerGroup sfxOutput;
     [SerializeField] private AudioMixerSnapshot sfxDefault, sfxMuted, musicDefault, musicMuted;
     [SerializeField] private float timeToReachSnapshot = 0.5f;
-    [SerializeField] private Material materialBG;
-    [SerializeField] private Texture darkTexture, lightTexture;
+    // [SerializeField] private Material materialBG;
+    // [SerializeField] private Texture darkTexture, lightTexture;
     private readonly List<AudioSource> sources = new List<AudioSource>();
     private void Start()
     {
@@ -25,7 +25,7 @@ public class SoundManager : MMPersistentSingleton<SoundManager>
         var snapshot = (MusicOn ? musicDefault : musicMuted);
         snapshot.TransitionTo(timeToReachSnapshot);
 
-        ThemeOn = ThemeOn;
+        // ThemeOn = ThemeOn;
     }
 
     public void PlaySfx(string soundKey, float pitch = 1, Action actionStart = null, Action actionComplete = null)
@@ -105,7 +105,7 @@ public class SoundManager : MMPersistentSingleton<SoundManager>
         private set => PlayerPrefs.SetInt("VibrateOn", value ? 1 : 0);
     }
 
-    public bool ThemeOn
+    /*public bool ThemeOn
     {
         get => PlayerPrefs.GetInt("ThemeOn", 1) == 1;
         private set
@@ -113,7 +113,7 @@ public class SoundManager : MMPersistentSingleton<SoundManager>
             materialBG.mainTexture = value ? lightTexture : darkTexture;
             PlayerPrefs.SetInt("ThemeOn", value ? 1 : 0);
         }
-    }
+    }*/
 
     public void ChangeState(SettingType type, bool state)
     {
@@ -128,8 +128,8 @@ public class SoundManager : MMPersistentSingleton<SoundManager>
             case SettingType.VIBRATE:
                 VibrateOn = state;
                 break;
-            case SettingType.THEME:
-                ThemeOn = state;
+            //case SettingType.THEME:
+            //    ThemeOn = state;
                 break;
         }
     }
@@ -140,5 +140,5 @@ public enum SettingType
     SOUNDS,
     MUSIC,
     VIBRATE,
-    THEME
+    //THEME
 }

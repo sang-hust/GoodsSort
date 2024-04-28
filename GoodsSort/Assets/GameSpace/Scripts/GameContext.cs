@@ -5,6 +5,13 @@ using UnityEngine;
 public class GameContext : MonoBehaviour
 {
 }
+
+public enum ModeGamePlay
+{
+    Time,
+    Move
+}
+
 public enum ItemTypeEnum
 {
     None = 0,

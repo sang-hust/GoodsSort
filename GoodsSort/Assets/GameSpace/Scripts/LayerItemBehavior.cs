@@ -98,6 +98,7 @@ public class LayerItemBehavior : MonoBehaviour
             var isDone = CheckLayerDone();
             if (!isDone) return;
             
+            GameManager.Instance.comboManager.UpdateCombo();
             var winLoseManager = GameManager.Instance.winLoseManager;
             winLoseManager.UpdateQuantityItem(-_listSpace.Count);
             

@@ -27,4 +27,9 @@ public class WinLoseManager : MonoBehaviour
         quantityItemInLevel += value;
         quantityItem.text = quantityItemInLevel.ToString();
     }
+    
+    public void OutOfTime()
+    {
+        PopupUIManager.Instance.GetPopup<PopupRevival>().ShowPopup();
+    }
 }
