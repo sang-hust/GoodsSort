@@ -7,15 +7,21 @@ public class GameManager : MMSingleton<GameManager>
     public Transform ParentLayerItemHighest;
     [HideInInspector] public WinLoseManager winLoseManager;
     [HideInInspector] public BoosterManager boosterManager;
+    [HideInInspector] public TimeManager timeManager;
+    [HideInInspector] public ComboManager comboManager;
     
     public readonly Dictionary<int, SelfBehavior> DictSelf = new Dictionary<int, SelfBehavior>();
     public readonly Dictionary<int, ItemBehavior> DictItem = new Dictionary<int, ItemBehavior>();
 
+    public static ModeGamePlay modeGame = ModeGamePlay.Time;
+    
     protected override void Awake()
     {
         base.Awake();
         winLoseManager = GetComponent<WinLoseManager>();
         boosterManager = GetComponent<BoosterManager>();
+        timeManager = GetComponent<TimeManager>();
+        comboManager = GetComponent<ComboManager>();
     }
 
     public void SetUniqueIDSelf(SelfBehavior selfData)

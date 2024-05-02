@@ -10,21 +10,20 @@ public class LevelManager : MMSingleton<LevelManager>
     [SerializeField] private SelfBehavior selfPrefab;
     [SerializeField] private SelfSO selfSo;
     [SerializeField] private Transform gridTransform;
-    [SerializeField] private TMP_Text levelText;
 
     private WrapperData playerData;
     private List<SelfBehavior> _listSelf;
+    public Action OnStartLevel, OnLoadLevel, OnBonusStart;
+    
     private void Start()
     {
         GameDataCenter.Instance.GetOrCreate(out playerData);
-        InitLevel();
+        StartCoroutine(InitLevel());
     }
 
-    private void InitLevel()
+    private IEnumerator InitLevel()
     {
         var level = playerData.Client.level;
-        var lvl = level + 1;
-        levelText.text = "Level: " + lvl;
         var levelData = selfSo.LevelData[level];
 
         _listSelf = new List<SelfBehavior>();
@@ -38,6 +37,10 @@ public class LevelManager : MMSingleton<LevelManager>
         }
         
         GameManager.Instance.SetUniqueIDItem();
+        OnLoadLevel?.Invoke();
+        yield return InGameUIManager.Instance.BonusResourceOnStart(OnBonusStart);
+
+        OnStartLevel?.Invoke();
     }
 
     public void NextLevel()
@@ -45,14 +48,14 @@ public class LevelManager : MMSingleton<LevelManager>
         playerData.ModifyLevel(1);
         DestroyAllSelf();
         LoadSceneManager.Instance.LoadScene("InGameScene");
-        InitLevel();
+        StartCoroutine(InitLevel());  
     }
 
     public void OnReplay()
     {
         DestroyAllSelf();
         LoadSceneManager.Instance.LoadScene("InGameScene");
-        InitLevel();  
+        StartCoroutine(InitLevel());  
     }
 
     private void DestroyAllSelf()

@@ -9,7 +9,7 @@ public class UIButtonSkill : MonoBehaviour
 {
     [SerializeField] private TMP_Text lSkill;
     [SerializeField] private GameObject bgNum, iconPlus;
-    [SerializeField] private Image bgBtnBlock, bgIcon;
+    // [SerializeField] private Image bgBtnBlock, bgIcon;
     public Action onClick { get; set; }
 
     public void UpdateUI(int number)

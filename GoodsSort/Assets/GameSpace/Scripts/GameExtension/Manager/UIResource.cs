@@ -32,7 +32,7 @@ public class UIResource : MonoBehaviour
         currentAmount = newValue;
         return this;
     }
-    public void DoCollectAnim(Vector3 start, Action callback = null)
+    public UIResource DoCollectAnim(Vector3 start, Action callback = null)
     {
         var current = currentAmount;
         durationDOText = 0.15f * delta + 0.3f;
@@ -45,7 +45,26 @@ public class UIResource : MonoBehaviour
         {
             UICollectEffect.Instance.DoCollect(start, iconResource, PlaySFX, i * 0.1f, scaleIcon);
         }
+        return this;
     }
+    public UIResource DoCollectImmediately(Vector3 start, Action callback = null)
+    {
+        durationDOText = 0.15f * delta + 0.3f;
+        UICollectEffect.Instance.DoCollect(start, iconResource, () =>
+        {
+            DoImmediately();
+            callback?.Invoke();
+            PlaySFX();
+        }, 0, scaleIcon);
+        for (var i = 1; i < delta; i++)
+        {
+            UICollectEffect.Instance.DoCollect(start, iconResource, PlaySFX, i * 0.1f, scaleIcon);
+        }
+
+        return this;
+    }
+    public void DoFadeAmount(Vector3 start, int amount, Sprite sprite = null) => UICollectEffect.Instance.DoFloatAmount(start, amount, sprite);
+    public void DoFadeAmountAndCollect(Vector3 start, int amount, Action callback = null) => UICollectEffect.Instance.DoFloatAmountAndCollect(start, amount, iconResource, callback);
     private float durationDOText;
     private void DoAnim(int current, Action callback)
     {
@@ -69,9 +88,19 @@ public class UIResource : MonoBehaviour
             .AppendInterval(0.5f)
             .AppendCallback(() => callback?.Invoke());
     }
-    public void DoImmediately()
+    public UIResource DoImmediately()
     {
         textResource.text = FormatNumber(currentAmount);
         cacheAmount = currentAmount;
+        return this;
+    }
+    public void DoPunchText()
+    {
+        textResource.DOComplete();
+        textResource.transform.DOPunchScale(Vector3.one * 0.2f, 0.15f, 3, 0).SetEase(Ease.InOutElastic).SetTarget(textResource);
+    }
+    public void DoColorText(string hexColor)
+    {
+        textResource.color = ColorExtension.FromHex(hexColor);
     }
 }
