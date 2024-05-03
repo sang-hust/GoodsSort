@@ -53,6 +53,9 @@ public class LayerItemBehavior : MonoBehaviour
             _listSpace[indexSpace].UpdateStatus(false);
             itemBehavior.UpdatePosition(_listSpace[indexSpace].transform);
             itemBehavior.UpdateItemPosition(_listSpace[indexSpace]);
+            
+            GameManager.Instance.boosterManager
+                .LoadToStackTurnMove(itemBehavior.uniqueId);
         }
         else
         {
@@ -104,10 +107,12 @@ public class LayerItemBehavior : MonoBehaviour
             
             for (var i = 0; i < _listItem.Count; i++)
             {
+                GameManager.Instance.RemoveItemDict(_listItem[i].uniqueId);
                  _listItem[i].gameObject.SetActive(false);
                  _listItem[i] = null;
             }
             
+            GameManager.Instance.boosterManager.ClearStackTurnMove();
             winLoseManager.CheckWinAndNextLevel();
             ExecuteEmptyLayer();
         }

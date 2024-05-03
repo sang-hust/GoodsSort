@@ -13,7 +13,7 @@ public class NotifyManager : MMSingleton<NotifyManager>
 {
     [SerializeField] private TMP_Text lMessage;
     [SerializeField] private Image[] imageBG;
-    [SerializeField] private SkeletonAnimation spineClearStage;
+    //[SerializeField] private SkeletonAnimation spineClearStage;
     [SerializeField] private GameObject fade;
 
     private AnimationState animationState;
@@ -45,8 +45,8 @@ public class NotifyManager : MMSingleton<NotifyManager>
     public void ShowStageClear()
     {
         if (isShowing) return;
-        spineClearStage.gameObject.SetActive(true);
-        animationState = spineClearStage.AnimationState;
+        //spineClearStage.gameObject.SetActive(true);
+        //animationState = spineClearStage.AnimationState;
         animationState.SetAnimation(0, "animation", false);
         ParticleUIManager.Instance.PlayPaperFireworks();
         imageBG[0].color = ColorExtension.FromHex("283F93");
@@ -89,7 +89,7 @@ public class NotifyManager : MMSingleton<NotifyManager>
             .Join(imageBG[1].rectTransform.DOSizeDelta(new Vector2(0, 360), 0.15f))
             .AppendCallback(() =>
             {
-                spineClearStage.gameObject.SetActive(false);
+                //spineClearStage.gameObject.SetActive(false);
                 isShowing = false;
                 fade.SetActive(false);
             })

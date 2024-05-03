@@ -45,6 +45,8 @@ public class SelfBehavior : MonoBehaviour
         ActiveItemHighestLayer();
     }
 
+    public LayerItemBehavior GetCurrentLayer() => _listLayerItem[0];
+
     private void ActiveItemHighestLayer()
     {
         _listLayerItem[0].ClearFadeItem();

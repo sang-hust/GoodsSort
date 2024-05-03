@@ -94,7 +94,10 @@ public class ItemBehavior : MonoBehaviour
             {
                 spaceEnd = spaceCache;
                 spaceStart = _spaceBehavior;
-                    
+                
+                GameManager.Instance.boosterManager.SetFinishData(spaceEnd.IndexSpace, spaceEnd.GetIndexSelf());
+                GameManager.Instance.boosterManager.SetStartData(spaceStart.IndexSpace, spaceStart.GetIndexSelf());
+                
                 _spaceBehavior.RemoveData();
                 spaceCache.FillData(this);
                 

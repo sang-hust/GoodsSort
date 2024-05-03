@@ -14,7 +14,7 @@ public class InGameUIManager : MMSingleton<InGameUIManager>
     
     public AnimationCurve curve;
     [SerializeField] private TMP_Text textLevel;
-    [SerializeField] private GameObject hudMove, hudTime, hudBoosterHarmer;
+    [SerializeField] private GameObject hudMove, hudTime, hudBoosterHarmer, hudFrozen;
     [SerializeField] private Image iconMove, iconTime;
 
     private WrapperData wrapperPlayer;
@@ -77,5 +77,15 @@ public class InGameUIManager : MMSingleton<InGameUIManager>
             yield return new WaitForSecondsRealtime(0.6f);
             yield return UICollectEffect.Instance.DoBonusOnStartGame(iconTime, callback);
         }
+    }
+
+    public void OnHudHammer()
+    {
+        hudBoosterHarmer.SetActive(true);
+    }
+
+    public void OnHudFrozen()
+    {
+        hudFrozen.SetActive(true);
     }
 }

@@ -6,6 +6,8 @@ public class SpaceBehavior : MonoBehaviour
     [SerializeField] private bool _available;
     [SerializeField] private LayerItemBehavior _layerItemBehavior;
     [SerializeField] private BoxCollider2D _collider2D;
+
+    public int IndexSpace => _indexSpace;
     
     /// <summary>
     /// Parent always Layer Item

@@ -8,6 +8,7 @@ public class TimeManager : MonoBehaviour
     [SerializeField] [DisplayAsString] private int numberTimeRemain;
     private InGameUIManager uiManager;
     private WrapperData wrapperPlayer;
+    public bool pause = false;
 
     private string hexColorTimeNormal = "FFD029", hexColorTimeOut = "FF413B";
 
@@ -22,7 +23,7 @@ public class TimeManager : MonoBehaviour
         IECount = CountTimeGame();
     }
 
-    private void StartCountTime()
+    public void StartCountTime()
     {
         if (GameManager.modeGame != ModeGamePlay.Time) return;
         StopCountTime();
@@ -69,7 +70,7 @@ public class TimeManager : MonoBehaviour
 
     private IEnumerator CountTimeGame()
     {
-        while (numberTimeRemain > 0)
+        while (numberTimeRemain > 0 && !pause)
         {
             yield return new WaitForSecondsRealtime(1);
             numberTimeRemain--;
@@ -85,6 +86,11 @@ public class TimeManager : MonoBehaviour
             }
         }
 
+        if (pause)
+        {
+            yield break;
+        }
+        
         yield return new WaitForSecondsRealtime(0.5f);
         GameManager.Instance.winLoseManager.OutOfTime();
     }

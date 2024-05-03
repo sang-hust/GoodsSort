@@ -59,6 +59,14 @@ public class GameManager : MMSingleton<GameManager>
         
     }
 
+    public void RemoveItemDict(int uniqueID)
+    {
+        if (DictItem.ContainsKey(uniqueID))
+        {
+            DictItem.Remove(uniqueID);
+        }
+    }
+
     public void OnReplay()
     {
         LevelManager.Instance.OnReplay();
