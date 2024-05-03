@@ -27,7 +27,7 @@ public class LevelManager : MMSingleton<LevelManager>
     {
         var level = playerData.Client.level;
 
-        if (level <= 1)
+        if (level <= 0)
         {
             PopupUIManager.Instance.GetPopup<Popup_Tutorial>().ShowPopup();
         }
@@ -87,7 +87,7 @@ public class LevelManager : MMSingleton<LevelManager>
     private int idFake = 999;
     public void AddSelfToList()
     {
-        if (_listSelf.Count > 9)
+        if (_listSelf.Count >= 9)
         {
             NotifyManager.Instance.ShowWarning("Max Size");
             return;
