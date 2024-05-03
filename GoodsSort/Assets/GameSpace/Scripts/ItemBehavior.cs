@@ -119,6 +119,7 @@ public class ItemBehavior : MonoBehaviour
     /// </summary>
     private void ResetPosition()
     {
+        SoundManager.Instance.PlaySfx("TouchItem");
         transform.localPosition = Vector3.zero;
     }
 
@@ -133,7 +134,6 @@ public class ItemBehavior : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!_dragging) return;
         if (!other.CompareTag("Space")) return;
         spaceCache = other.gameObject.GetComponent<SpaceBehavior>();
     }

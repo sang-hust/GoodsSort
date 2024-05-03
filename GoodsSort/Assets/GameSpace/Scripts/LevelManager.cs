@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using MoreMountains.Tools;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using Random = System.Random;
 
 public class LevelManager : MMSingleton<LevelManager>
 {
@@ -24,8 +26,23 @@ public class LevelManager : MMSingleton<LevelManager>
     private IEnumerator InitLevel()
     {
         var level = playerData.Client.level;
-        var levelData = selfSo.LevelData[level];
 
+        if (level <= 1)
+        {
+            PopupUIManager.Instance.GetPopup<Popup_Tutorial>().ShowPopup();
+        }
+        
+        var levelData = new List<SelfData>();
+        if (level >= 19)
+        {
+            var indexRandom = UnityEngine.Random.Range(1, 8);
+            levelData = selfSo.LevelData[indexRandom];
+        }
+        else
+        {
+            levelData = selfSo.LevelData[level];
+        }
+        
         _listSelf = new List<SelfBehavior>();
         for (var i = 0; i < levelData.Count; i++)
         {
@@ -64,5 +81,31 @@ public class LevelManager : MMSingleton<LevelManager>
         {
             DestroyImmediate(self);
         }
+    }
+
+
+    private int idFake = 999;
+    public void AddSelfToList()
+    {
+        if (_listSelf.Count > 9)
+        {
+            NotifyManager.Instance.ShowWarning("Max Size");
+            return;
+        }
+        var selfData = new SelfData(idFake, new List<LayerData>()
+        {
+            new LayerData(new List<ItemData>()
+            {
+                new ItemData(ItemTypeEnum.None),
+                new ItemData(ItemTypeEnum.None),
+                new ItemData(ItemTypeEnum.None),
+            })
+        });
+        
+        idFake++;
+        var self = Instantiate(selfPrefab, gridTransform);
+        self.InitData(selfData);
+        _listSelf.Add(self);
+        //gridTransform.GetComponent<GridLayoutGroup>().ex
     }
 }

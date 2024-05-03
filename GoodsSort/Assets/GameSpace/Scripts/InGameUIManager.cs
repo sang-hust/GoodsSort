@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class InGameUIManager : MMSingleton<InGameUIManager>
 {
     public UIButtonSkill[] bBooster;
-    public UIResource timeResource;
+    public UIResource timeResource, timeFrozenResource;
     private BoosterManager boosters;
     [HideInInspector] public UICombo UICombo;
     
@@ -35,6 +35,8 @@ public class InGameUIManager : MMSingleton<InGameUIManager>
         UpdateNumberSkill();
         SetTextLevel();
         //hudMove.SetActive(false);
+        SoundManager.Instance.StopMusic();
+        SoundManager.Instance.PlayMusicBG("MusicHome");
         hudTime.SetActive(true);
     }
     
@@ -48,6 +50,7 @@ public class InGameUIManager : MMSingleton<InGameUIManager>
     
     public void ActionClick(Action action)
     {
+        SoundManager.Instance.PlaySfx("Touch");
         StartCoroutine(IEActionClick());
         return;
 
@@ -86,6 +89,31 @@ public class InGameUIManager : MMSingleton<InGameUIManager>
 
     public void OnHudFrozen()
     {
+        if (hudFrozen.activeInHierarchy)
+        {
+            SoundManager.Instance.StopMusic();
+            SoundManager.Instance.PlayMusicBG("MusicHome");
+            hudFrozen.SetActive(false);
+            return;
+        }
+        
+        SoundManager.Instance.StopMusic();
+        SoundManager.Instance.PlayMusicBG("MusicHomeFrozen");
         hudFrozen.SetActive(true);
+    }
+
+    public void OnClickPause()
+    {
+        SoundManager.Instance.PlaySfx("Touch");
+        GameManager.Instance.timeManager.pause = true;
+        GameManager.Instance.timeManager.StopCountTime();
+        
+        PopupUIManager.Instance.GetPopup<Popup_Pause>().ShowPopup();
+    }
+    
+    public void OnClickInstruction()
+    {
+        SoundManager.Instance.PlaySfx("Touch");
+        PopupUIManager.Instance.GetPopup<Popup_Tutorial>().ShowPopup();
     }
 }

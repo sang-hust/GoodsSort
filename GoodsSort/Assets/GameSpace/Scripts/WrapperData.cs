@@ -60,7 +60,7 @@ public class WrapperData : IInitialize
     
     public void ModifyBooster(int indexBooster, int value)
     {
-        _client.booster[indexBooster] -= value;
+        _client.booster[indexBooster] += value;
         SaveOnClient();
     }
     

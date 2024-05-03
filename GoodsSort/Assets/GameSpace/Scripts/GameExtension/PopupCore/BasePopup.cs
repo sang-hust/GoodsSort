@@ -143,7 +143,7 @@ public abstract class BasePopup<T> : MonoBehaviour, IPopup where T : BasePopup<T
     /// <summary>
     /// Call back khi hiện, nên dùng thay cho OnEnable
     /// </summary>
-    protected abstract void OnShowPopup();
+    protected abstract IEnumerator OnShowPopup();
     /// <summary>
     /// Call back khi ẩn, nên dùng thay cho OnDisable
     /// </summary>

@@ -66,9 +66,4 @@ public class GameManager : MMSingleton<GameManager>
             DictItem.Remove(uniqueID);
         }
     }
-
-    public void OnReplay()
-    {
-        LevelManager.Instance.OnReplay();
-    }
 }

@@ -20,20 +20,32 @@ public class BoosterManager : MonoBehaviour
 
     public void HammerBooster()
     {
+        if (_wrapperData.Client.booster[3] <= 0)
+        {
+            PopupUIManager.Instance.GetPopup<Popup_More_Booster>().SetUpPopup(BoosterType.Hammer).ShowPopup();
+
+            return;
+        }
         
+        _wrapperData.ModifyBooster(3, -1);
+        InGameUIManager.Instance.UpdateNumberSkill();
+        
+        LevelManager.Instance.AddSelfToList();
     }
 
     public void ShuffleBooster()
     {
         if (_wrapperData.Client.booster[1] <= 0)
         {
-            NotifyManager.Instance.ShowWarning("Not Enough Booster");
+            PopupUIManager.Instance.GetPopup<Popup_More_Booster>().SetUpPopup(BoosterType.Shuffle).ShowPopup();
+
             return;
         }
 
         _wrapperData.ModifyBooster(1, -1);
         InGameUIManager.Instance.UpdateNumberSkill();
 
+        return;
         var quantityTypeItem = new Dictionary<ItemTypeEnum, int>();
         var listItemTypeCurrent = new List<ItemTypeEnum>();
 
@@ -107,9 +119,13 @@ public class BoosterManager : MonoBehaviour
     {
         if (_wrapperData.Client.booster[0] <= 0)
         {
-            NotifyManager.Instance.ShowWarning("Not Enough Booster");
+            PopupUIManager.Instance.GetPopup<Popup_More_Booster>().SetUpPopup(BoosterType.Revert).ShowPopup();
             return;
         }
+
+        _wrapperData.ModifyBooster(0, -1);
+        InGameUIManager.Instance.UpdateNumberSkill();
+        return;
 
         PopupStack.IsWaiting = true;
         if (StackTurnMove.Count <= 0) 
@@ -117,10 +133,7 @@ public class BoosterManager : MonoBehaviour
             NotifyManager.Instance.ShowWarning("Can not do this!!", () => { PopupStack.IsWaiting = false; });
             return;
         }
-
-        SoundManager.Instance.PlaySfx("Undo");
-        _wrapperData.ModifyBooster(0, -1);
-        InGameUIManager.Instance.UpdateNumberSkill();
+        
         
         var turnMove = StackTurnMove.Pop();
         var startBaseLayer = GameManager.Instance.DictSelf[turnMove.startSelf].GetCurrentLayer();
@@ -158,9 +171,16 @@ public class BoosterManager : MonoBehaviour
 
     public void FrozenBooster()
     {
+        if (isFrozen)
+        {
+            NotifyManager.Instance.ShowWarning("Frozen is active!");
+            return;
+        }
+        
         if (_wrapperData.Client.booster[2] <= 0)
         {
-            NotifyManager.Instance.ShowWarning("Not Enough Booster");
+            PopupUIManager.Instance.GetPopup<Popup_More_Booster>().SetUpPopup(BoosterType.Frozen).ShowPopup();
+
             return;
         }
 
@@ -171,13 +191,17 @@ public class BoosterManager : MonoBehaviour
     }
 
 
+    private bool isFrozen;
     private IEnumerator IEFrozen()
     {
+        isFrozen = true;
         InGameUIManager.Instance.OnHudFrozen();
         GameManager.Instance.timeManager.pause = true;
         GameManager.Instance.timeManager.StopCountTime();
 
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(15f);
+        isFrozen = false;
+        InGameUIManager.Instance.OnHudFrozen();
         GameManager.Instance.timeManager.pause = false;
         GameManager.Instance.timeManager.StartCountTime();
     }

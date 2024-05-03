@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -47,6 +48,7 @@ public class LayerItemBehavior : MonoBehaviour
 
     public void FillItemToSpace(int indexSpace, ItemBehavior itemBehavior)
     {
+        SoundManager.Instance.PlaySfx("TouchItem");
         if (_listItem[indexSpace] == null)
         {
             _listItem[indexSpace] = itemBehavior;
@@ -111,11 +113,18 @@ public class LayerItemBehavior : MonoBehaviour
                  _listItem[i].gameObject.SetActive(false);
                  _listItem[i] = null;
             }
-            
+
+            StartCoroutine(IESoundDone());
             GameManager.Instance.boosterManager.ClearStackTurnMove();
             winLoseManager.CheckWinAndNextLevel();
             ExecuteEmptyLayer();
         }
+    }
+
+    private IEnumerator IESoundDone()
+    {
+        yield return new WaitForSeconds(0.2f);
+        SoundManager.Instance.PlaySfx("DoneLayer");
     }
     
     /// <summary>

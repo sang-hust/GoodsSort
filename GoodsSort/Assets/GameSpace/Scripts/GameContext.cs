@@ -44,3 +44,11 @@ public enum ItemMoveMode
     TapAction = 0,
     DragDrop
 }
+
+public enum BoosterType
+{
+    Hammer,
+    Shuffle,
+    Frozen,
+    Revert
+}

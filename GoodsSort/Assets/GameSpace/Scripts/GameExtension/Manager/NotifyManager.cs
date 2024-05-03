@@ -78,15 +78,15 @@ public class NotifyManager : MMSingleton<NotifyManager>
                 isShowing = true;
                 lMessage.enabled = false;
             })
-            .Append(imageBG[0].rectTransform.DOSizeDelta(new Vector2(1280, 360), 0.2f)).Play()
+            .Append(imageBG[0].rectTransform.DOSizeDelta(new Vector2(1280, 200), 0.2f)).Play()
             .Join(imageBG[0].DOFade(1, 0.2f))
-            .Join(imageBG[1].rectTransform.DOSizeDelta(new Vector2(1280, 360), 0.2f))
+            .Join(imageBG[1].rectTransform.DOSizeDelta(new Vector2(1280, 200), 0.2f))
             .AppendCallback(() => lMessage.enabled = true)
             .AppendInterval(timeShow)
             .AppendCallback(() => lMessage.enabled = false)
-            .Append(imageBG[0].rectTransform.DOSizeDelta(new Vector2(0, 360), 0.15f))
+            .Append(imageBG[0].rectTransform.DOSizeDelta(new Vector2(0, 200), 0.15f))
             .Join(imageBG[0].DOFade(0, 0.15f))
-            .Join(imageBG[1].rectTransform.DOSizeDelta(new Vector2(0, 360), 0.15f))
+            .Join(imageBG[1].rectTransform.DOSizeDelta(new Vector2(0, 200), 0.15f))
             .AppendCallback(() =>
             {
                 //spineClearStage.gameObject.SetActive(false);

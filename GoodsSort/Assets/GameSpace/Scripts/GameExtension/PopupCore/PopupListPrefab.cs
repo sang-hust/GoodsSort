@@ -13,7 +13,7 @@ public class PopupListPrefab : SerializedScriptableObject
     [Button]
     public void UpdateListPopup()
     {
-        string folderPath = "Assets/Prefab/Popup"; // Đường dẫn tới folder chứa prefab
+        string folderPath = "Assets/GameSpace/Prefabs/PopupPrefab"; // Đường dẫn tới folder chứa prefab
         dictionaryPopup.Clear(); // Xoá dictionary cũ nếu đã có
 
         // Lấy tất cả các file .prefab trong folder và các folder con

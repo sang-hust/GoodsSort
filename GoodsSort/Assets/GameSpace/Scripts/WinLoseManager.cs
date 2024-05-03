@@ -19,6 +19,7 @@ public class WinLoseManager : MonoBehaviour
             return;
         }
         
+        SoundManager.Instance.PlaySfx("Victory");
         LevelManager.Instance.NextLevel();
     }
 
@@ -30,6 +31,6 @@ public class WinLoseManager : MonoBehaviour
     
     public void OutOfTime()
     {
-        PopupUIManager.Instance.GetPopup<PopupRevival>().ShowPopup();
+        PopupUIManager.Instance.GetPopup<Popup_Game_Lose>().ShowPopup();
     }
 }
